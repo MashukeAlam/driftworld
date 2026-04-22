@@ -57,6 +57,9 @@ export class GameScreen extends Container {
   private cameraY = 0;
   private boundaryWarningCooldown = 0;
   private driftBonusCooldown = 0;
+  private lastMapPaletteUpdate = 0;
+  private lastRoadCheck = 0;
+  private currentRoadName = '';
   private homePixelX = 0;
   private homePixelY = 0;
   private won = false;
@@ -291,7 +294,7 @@ export class GameScreen extends Container {
 
       if (this.hovercraft.isDrifting && this.driftBonusCooldown <= 0) {
         bonusPoints = collected.points;
-        const praises = ['🔥 DRIFT COLLECT!', '💨 STYLE BONUS!', '✨ SMOOTH DRIFT!', '🌊 DRIFT MASTER!', '⚡ SLICK MOVES!'];
+        const praises = ['✨ Smooth Drift!', '🌊 Drift Boss!', '⚡ Slick Moves!'];
         bonusText = praises[Math.floor(Math.random() * praises.length)];
         this.driftBonusCooldown = 30;
       }
@@ -352,8 +355,12 @@ export class GameScreen extends Container {
       }
     }
 
-    // HUD
-    this.hud.updateRoadName(this.findNearestRoadName());
+    // HUD Road Name (throttled)
+    if (this.elapsed - this.lastRoadCheck > 0.5) {
+      this.currentRoadName = this.findNearestRoadName();
+      this.lastRoadCheck = this.elapsed;
+    }
+    this.hud.updateRoadName(this.currentRoadName);
 
     // Camera
     const targetCamX = -this.hovercraft.x + this.app.screen.width / 2;
@@ -431,8 +438,13 @@ export class GameScreen extends Container {
     this.skyBg.rect(0, 0, this.app.screen.width, this.app.screen.height);
     this.skyBg.fill(gradient);
 
-    this.mapRenderer.updatePalette(palette);
-    this.decorationLayer.updatePalette(palette);
+    // Throttle complex vector redrawing to twice a second
+    if (this.elapsed - this.lastMapPaletteUpdate > 0.5) {
+      this.mapRenderer.updatePalette(palette);
+      this.decorationLayer.updatePalette(palette);
+      this.lastMapPaletteUpdate = this.elapsed;
+    }
+
     this.boundaryRing.updatePalette(palette);
     this.hovercraft.updatePalette(palette);
     this.hud.updatePalette(palette);

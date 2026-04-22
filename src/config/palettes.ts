@@ -25,8 +25,8 @@ export interface Palette {
 export const DAWN: Palette = {
   sky: 0xF4A97F,
   skyGradientEnd: 0xFFD580,
-  roadPrimary: 0xFFEEDD,
-  roadSecondary: 0xFFDAC0,
+  roadPrimary: 0xFFB991, // Lighter than sky 0xF4A97F
+  roadSecondary: 0xFAAF87,
   roadOutline: 0xC08050,
   decoration: 0xDCB888,
   decorationAlt: 0xC49870,
@@ -41,8 +41,8 @@ export const DAWN: Palette = {
 export const NOON: Palette = {
   sky: 0xDFF0F7,
   skyGradientEnd: 0xE8F4FA,
-  roadPrimary: 0xEBF4FA,
-  roadSecondary: 0xDCEAF4,
+  roadPrimary: 0xEBF8FF, // Lighter than sky 0xDFF0F7
+  roadSecondary: 0xE6F4FC,
   roadOutline: 0xB0B8C0,
   decoration: 0xC8E0C0,
   decorationAlt: 0xD0D0D0,
@@ -57,8 +57,8 @@ export const NOON: Palette = {
 export const DUSK: Palette = {
   sky: 0x1F4E5B, // Deep teal
   skyGradientEnd: 0x4A8E9C, // Cyan
-  roadPrimary: 0xC0E8E8,
-  roadSecondary: 0xA0D0D0,
+  roadPrimary: 0x295D6C, // Lighter than sky 0x1F4E5B
+  roadSecondary: 0x245563,
   roadOutline: 0x2A6E7C,
   decoration: 0x70B0B0,
   decorationAlt: 0x509090,
@@ -73,8 +73,8 @@ export const DUSK: Palette = {
 export const NIGHT: Palette = {
   sky: 0x0A0E1A,
   skyGradientEnd: 0x101828,
-  roadPrimary: 0xC8D8FF,
-  roadSecondary: 0x6878A0,
+  roadPrimary: 0x161C2C, // Lighter than sky 0x0A0E1A
+  roadSecondary: 0x101524,
   roadOutline: 0x303848,
   decoration: 0x182030,
   decorationAlt: 0x202838,

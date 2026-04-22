@@ -52,46 +52,6 @@ export class DecorationLayer extends Container {
    */
   generate(centerX: number, centerY: number, radiusPixels: number) {
     this.shapes = [];
-    const tileSize = 80; // Grid cell size for decoration placement
-    const extent = radiusPixels + 200; // Generate slightly beyond visible area
-
-    const startX = centerX - extent;
-    const startY = centerY - extent;
-    const endX = centerX + extent;
-    const endY = centerY + extent;
-
-    for (let x = startX; x < endX; x += tileSize) {
-      for (let y = startY; y < endY; y += tileSize) {
-        // Use noise to determine if this cell gets a decoration
-        const n = this.noise2D(x * 0.003, y * 0.003);
-        const n2 = this.noise2D(x * 0.008 + 100, y * 0.008 + 100);
-
-        if (n > 0.1) {
-          // Determine type based on secondary noise
-          let type: DecorationShape['type'];
-          if (n2 > 0.3) {
-            type = 'vegetation';
-          } else if (n2 > -0.1) {
-            type = 'building';
-          } else {
-            type = 'water';
-          }
-
-          // Seeded random for this cell
-          const cellSeed = Math.abs(Math.floor(x * 7919 + y * 104729));
-          const rng = mulberry32(cellSeed);
-
-          this.shapes.push({
-            x: x + (rng() - 0.5) * tileSize * 0.8,
-            y: y + (rng() - 0.5) * tileSize * 0.8,
-            type,
-            scale: 0.5 + rng() * 1.5,
-            rotation: rng() * Math.PI * 2,
-            seed: cellSeed,
-          });
-        }
-      }
-    }
 
     this.generated = true;
     this.redraw();

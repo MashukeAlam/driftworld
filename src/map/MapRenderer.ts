@@ -73,20 +73,7 @@ export class MapRenderer extends Container {
 
       if (segment.points.length < 2) continue;
 
-      // Draw outline (wider, darker stroke behind road)
-      if (outlineTarget && !isFootway) {
-        outlineTarget.moveTo(segment.points[0].x, segment.points[0].y);
-        for (let i = 1; i < segment.points.length; i++) {
-          outlineTarget.lineTo(segment.points[i].x, segment.points[i].y);
-        }
-        outlineTarget.stroke({
-          width: width + 3,
-          color: outlineColor,
-          alpha: 0.55,
-          cap: 'round',
-          join: 'round',
-        });
-      }
+      // Outline drawing removed per user request
 
       // Draw road
       target.moveTo(segment.points[0].x, segment.points[0].y);
