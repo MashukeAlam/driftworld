@@ -9,6 +9,7 @@
    ═══════════════════════════════════════════════════════ */
 
 import { Container, Graphics, Text, TextStyle, FillGradient, Application } from 'pixi.js';
+import { getPalette, Palette } from '../config/palettes';
 
 export class StartScreen extends Container {
   private silhouettes: { gfx: Graphics; speed: number; startX: number; y: number }[] = [];
@@ -24,15 +25,21 @@ export class StartScreen extends Container {
   private transitioning = false;
   private whiteOverlay!: Graphics;
   public onStart: (() => void) | null = null;
+  public onChangeLocation: (() => void) | null = null;
+  private changeLocationBtn!: Container;
   private level: number;
   private carColor: number;
+  private timeOfDay: number;
+  private currentPalette: Palette;
 
-  constructor(app: Application, level: number = 1, carColor: number = 0x88FF44) {
+  constructor(app: Application, level: number = 1, carColor: number = 0x88FF44, timeOfDay: number = 0.02) {
     super();
     this.appWidth = app.screen.width;
     this.appHeight = app.screen.height;
     this.level = level;
     this.carColor = carColor;
+    this.timeOfDay = timeOfDay;
+    this.currentPalette = getPalette(timeOfDay);
     this.buildScene();
   }
 
@@ -40,9 +47,8 @@ export class StartScreen extends Container {
     // ─── Sky gradient background ───
     const sky = new Graphics();
     const gradient = new FillGradient(0, 0, 0, this.appHeight);
-    gradient.addColorStop(0, 0xF4A97F);   // Dawn coral
-    gradient.addColorStop(0.5, 0xFFC87A); // Warm mid
-    gradient.addColorStop(1, 0xFFD580);   // Golden bottom
+    gradient.addColorStop(0, this.currentPalette.sky);
+    gradient.addColorStop(1, this.currentPalette.skyGradientEnd);
     sky.rect(0, 0, this.appWidth, this.appHeight);
     sky.fill(gradient);
     this.addChild(sky);
@@ -58,8 +64,8 @@ export class StartScreen extends Container {
     // ─── Ground plane below horizon ───
     const ground = new Graphics();
     const groundGradient = new FillGradient(0, horizonY, 0, this.appHeight);
-    groundGradient.addColorStop(0, 0xE89060);
-    groundGradient.addColorStop(1, 0xD07848);
+    groundGradient.addColorStop(0, this.currentPalette.ambient);
+    groundGradient.addColorStop(1, this.currentPalette.fogColor);
     ground.rect(0, horizonY, this.appWidth, this.appHeight - horizonY);
     ground.fill(groundGradient);
     ground.alpha = 0.3;
@@ -73,7 +79,7 @@ export class StartScreen extends Container {
       fontFamily: 'Outfit, sans-serif',
       fontSize: 12,
       fontWeight: '700',
-      fill: 0x2A1810,
+      fill: this.currentPalette.textColor,
       letterSpacing: 3,
     });
     this.levelText = new Text({ text: `LEVEL ${this.level}`, style: levelStyle });
@@ -103,7 +109,7 @@ export class StartScreen extends Container {
       fontFamily: 'Cormorant Garamond, Georgia, serif',
       fontSize: Math.min(72, this.appWidth * 0.1),
       fontWeight: '300',
-      fill: 0x2A1810,
+      fill: this.currentPalette.textColor,
       letterSpacing: 12,
     });
     this.titleText = new Text({ text: 'DRIFTWORLD', style: titleStyle });
@@ -118,7 +124,7 @@ export class StartScreen extends Container {
       fontFamily: 'Outfit, sans-serif',
       fontSize: Math.min(16, this.appWidth * 0.025),
       fontWeight: '300',
-      fill: 0x3D2518,
+      fill: this.currentPalette.textColor,
       letterSpacing: 6,
     });
     this.taglineText = new Text({ text: 'DRIFT  ·  COLLECT  ·  EXPLORE', style: taglineStyle });
@@ -135,6 +141,13 @@ export class StartScreen extends Container {
     this.beginButton.alpha = 0;
     this.addChild(this.beginButton);
 
+    // ─── CHANGE LOCATION button ───
+    this.changeLocationBtn = this.createChangeLocationButton();
+    this.changeLocationBtn.x = this.appWidth / 2;
+    this.changeLocationBtn.y = this.appHeight * 0.56 + 60;
+    this.changeLocationBtn.alpha = 0;
+    this.addChild(this.changeLocationBtn);
+
     // ─── White transition overlay ───
     this.whiteOverlay = new Graphics();
     this.whiteOverlay.rect(0, 0, this.appWidth, this.appHeight);
@@ -149,13 +162,27 @@ export class StartScreen extends Container {
       // depth 1 (far, slow)
       { type: 'mountain', speed: 0.15, y: horizonY - 60, scale: 1.2, depth: 0.3 },
       { type: 'mountain2', speed: 0.1, y: horizonY - 40, scale: 0.8, depth: 0.3 },
+      { type: 'mountain', speed: 0.12, y: horizonY - 50, scale: 1.0, depth: 0.3 },
+      { type: 'mountain2', speed: 0.14, y: horizonY - 45, scale: 0.9, depth: 0.3 },
+      { type: 'mountain', speed: 0.11, y: horizonY - 55, scale: 1.1, depth: 0.3 },
       // depth 2 (mid)
       { type: 'hovercraft', speed: 0.4, y: horizonY + 20, scale: 0.6, depth: 0.6 },
+      { type: 'hovercraft', speed: 0.38, y: horizonY + 5, scale: 0.5, depth: 0.5 },
       { type: 'road', speed: 0.35, y: horizonY + 10, scale: 0.5, depth: 0.6 },
       { type: 'gem', speed: 0.45, y: horizonY - 80, scale: 0.4, depth: 0.6 },
+      { type: 'flower', speed: 0.42, y: horizonY - 60, scale: 0.45, depth: 0.6 },
+      { type: 'road', speed: 0.36, y: horizonY + 15, scale: 0.55, depth: 0.6 },
+      { type: 'gem', speed: 0.41, y: horizonY - 70, scale: 0.4, depth: 0.6 },
+      { type: 'flower', speed: 0.48, y: horizonY - 50, scale: 0.35, depth: 0.6 },
       // depth 3 (close, fast)
       { type: 'flower', speed: 0.7, y: horizonY + 50, scale: 0.5, depth: 0.9 },
       { type: 'road2', speed: 0.6, y: horizonY + 30, scale: 0.7, depth: 0.9 },
+      { type: 'gem', speed: 0.8, y: horizonY + 40, scale: 0.6, depth: 0.9 },
+      { type: 'hovercraft', speed: 0.65, y: horizonY + 60, scale: 0.8, depth: 0.9 },
+      { type: 'road2', speed: 0.62, y: horizonY + 40, scale: 0.6, depth: 0.9 },
+      { type: 'gem', speed: 0.75, y: horizonY + 35, scale: 0.5, depth: 0.9 },
+      { type: 'flower', speed: 0.68, y: horizonY + 45, scale: 0.55, depth: 0.9 },
+      { type: 'hovercraft', speed: 0.72, y: horizonY + 55, scale: 0.75, depth: 0.9 },
     ];
 
     for (const data of silhouetteData) {
@@ -175,7 +202,7 @@ export class StartScreen extends Container {
   }
 
   private drawSilhouetteShape(gfx: Graphics, type: string, scale: number) {
-    const color = 0x1A0E08;
+    const color = this.currentPalette.fogColor;
     const s = scale * 100;
 
     switch (type) {
@@ -243,9 +270,9 @@ export class StartScreen extends Container {
     // Pill background
     const bg = new Graphics();
     bg.roundRect(-80, -22, 160, 44, 22);
-    bg.fill({ color: 0x2A1810, alpha: 0.15 });
+    bg.fill({ color: this.currentPalette.textColor, alpha: 0.15 });
     bg.roundRect(-80, -22, 160, 44, 22);
-    bg.stroke({ width: 1.5, color: 0x2A1810, alpha: 0.35 });
+    bg.stroke({ width: 1.5, color: this.currentPalette.textColor, alpha: 0.35 });
     container.addChild(bg);
 
     // Glow (hidden until hover)
@@ -259,7 +286,7 @@ export class StartScreen extends Container {
       fontFamily: 'Outfit, sans-serif',
       fontSize: 14,
       fontWeight: '600',
-      fill: 0x2A1810,
+      fill: this.currentPalette.textColor,
       letterSpacing: 4,
     });
     const label = new Text({ text: 'BEGIN', style: textStyle });
@@ -272,6 +299,39 @@ export class StartScreen extends Container {
     container.on('pointertap', () => {
       if (!this.transitioning) {
         this.transitioning = true;
+      }
+    });
+
+    return container;
+  }
+
+  private createChangeLocationButton(): Container {
+    const container = new Container();
+    container.eventMode = 'static';
+    container.cursor = 'pointer';
+
+    const textStyle = new TextStyle({
+      fontFamily: 'Outfit, sans-serif',
+      fontSize: 12,
+      fontWeight: '500',
+      fill: this.currentPalette.textColor,
+      letterSpacing: 2,
+    });
+    const label = new Text({ text: 'CHANGE LOCATION', style: textStyle });
+    label.anchor.set(0.5);
+    container.addChild(label);
+
+    const line = new Graphics();
+    line.moveTo(-label.width / 2, 10);
+    line.lineTo(label.width / 2, 10);
+    line.stroke({ width: 1, color: this.currentPalette.textColor, alpha: 0.5 });
+    container.addChild(line);
+
+    container.on('pointerover', () => { line.alpha = 1; });
+    container.on('pointerout', () => { line.alpha = 0.5; });
+    container.on('pointertap', () => {
+      if (!this.transitioning && this.onChangeLocation) {
+        this.onChangeLocation();
       }
     });
 
@@ -309,9 +369,10 @@ export class StartScreen extends Container {
       this.taglineText.alpha = Math.min(1, this.taglineText.alpha + 0.02 * delta);
     }
 
-    // ─── Fade in button after 2.5s ───
+    // ─── Fade in buttons after 2.5s ───
     if (this.elapsed > 2.5 && this.beginButton.alpha < 1) {
       this.beginButton.alpha = Math.min(1, this.beginButton.alpha + 0.025 * delta);
+      this.changeLocationBtn.alpha = Math.min(1, this.changeLocationBtn.alpha + 0.025 * delta);
     }
 
     // ─── Transition animation ───

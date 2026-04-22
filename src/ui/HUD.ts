@@ -11,6 +11,7 @@ export class HUD {
 
   constructor() {
     this.overlay = document.getElementById('hud-overlay')!;
+    this.overlay.innerHTML = ''; // prevent overlap on reload
     this.build();
   }
 

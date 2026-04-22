@@ -47,7 +47,9 @@ export const ARTIFACT_DENSITY = 0.4; // artifacts per road intersection
 export const DAY_CYCLE_DURATION = 180; // seconds for full day cycle (~3 real minutes)
 
 // ─── Overpass API ───
-export const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
+export const OVERPASS_URL = import.meta.env.DEV 
+  ? 'https://overpass-api.de/api/interpreter' 
+  : 'https://overpass.kumi.systems/api/interpreter';
 export const OVERPASS_TIMEOUT = 25;
 
 // ─── Camera ───

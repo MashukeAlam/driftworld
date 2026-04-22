@@ -36,9 +36,11 @@ export class Hovercraft extends Container {
   }> = [];
   private dustGfx: Graphics;
   private currentPalette: Palette | null = null;
+  private isNight = false;
 
   constructor(carColor: number = 0x88FF44) {
     super();
+    this.scale.set(1.5);
     this.carColor = carColor;
     this.shadowGfx = new Graphics();
     this.addChild(this.shadowGfx);
@@ -108,6 +110,11 @@ export class Hovercraft extends Container {
 
   updatePalette(palette: Palette) {
     this.currentPalette = palette;
+    const skyR = (palette.sky >> 16) & 0xFF;
+    const skyG = (palette.sky >> 8) & 0xFF;
+    const skyB = palette.sky & 0xFF;
+    const luma = 0.299 * skyR + 0.587 * skyG + 0.114 * skyB;
+    this.isNight = luma < 100;
   }
 
   update(input: HovercraftInput, delta: number) {
@@ -180,7 +187,7 @@ export class Hovercraft extends Container {
 
     // ─── Headlight glow ───
     this.headlightGfx.clear();
-    if (this.speed > 0.3) {
+    if (this.speed > 0.3 && this.isNight) {
       this.headlightGfx.circle(
         Math.cos(this.heading) * 16,
         Math.sin(this.heading) * 16,

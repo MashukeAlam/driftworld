@@ -52,21 +52,21 @@ export class BoundaryRing extends Container {
 
     // ─── Fog overlay ───
     this.fogGfx.clear();
-    const fogSize = Math.max(screenW, screenH) * 2;
+    const fogSize = 100000; // Massive so player never sees the rect edge
     // Draw a large dark rect, then cut a circle out by drawing a lighter circle
     this.fogGfx.rect(-fogSize / 2, -fogSize / 2, fogSize, fogSize);
     this.fogGfx.fill({ color: p.fogColor, alpha: 0.6 });
     this.fogGfx.circle(0, 0, r + 30);
     this.fogGfx.cut();
 
-    // ─── Glow ring (pulsing) ───
+    // ─── Glow ring (pulsing red) ───
     this.glowGfx.clear();
     const pulse = Math.sin(elapsed * 3) * 0.15 + 0.85;
     const glowWidth = 12 * pulse;
     this.glowGfx.circle(0, 0, r);
-    this.glowGfx.stroke({ width: glowWidth, color: p.glowColor, alpha: 0.15 * pulse });
+    this.glowGfx.stroke({ width: glowWidth, color: 0xFF3333, alpha: 0.25 * pulse });
     this.glowGfx.circle(0, 0, r);
-    this.glowGfx.stroke({ width: 6, color: p.glowColor, alpha: 0.08 });
+    this.glowGfx.stroke({ width: 6, color: 0xFF3333, alpha: 0.15 });
 
     // Flash on expand
     if (this.expandAnimProgress >= 0 && this.expandAnimProgress < 0.3) {
@@ -78,7 +78,7 @@ export class BoundaryRing extends Container {
     // ─── Main ring ───
     this.ringGfx.clear();
     this.ringGfx.circle(0, 0, r);
-    this.ringGfx.stroke({ width: 2, color: 0xFFE8A0, alpha: 0.45 });
+    this.ringGfx.stroke({ width: 2, color: 0xFF5555, alpha: 0.75 });
 
     // ─── Labels ───
     this.labelContainer.removeChildren();

@@ -37,7 +37,8 @@ async function main() {
     carColor: getCarColor(1),
   };
 
-  async function startLevel() {
+  // ─── Main Game Loop ───
+  async function startLevel(lastTimeOfDay: number = 0.02) {
     const level = state.level;
     const carColor = getCarColor(level);
     state.carColor = carColor;
@@ -58,15 +59,25 @@ async function main() {
     const spawn = calculateSpawnPosition(state.homeLat, state.homeLng, spawnDist);
 
     // ─── Start Screen ───
-    const startScreen = new StartScreen(app, level, carColor);
+    const startScreen = new StartScreen(app, level, carColor, lastTimeOfDay);
     app.stage.addChild(startScreen);
 
-    await new Promise<void>((resolve) => {
+    await new Promise<string | void>((resolve) => {
       // Animate start screen
       const startTicker = (ticker: { deltaTime: number }) => {
         startScreen.update(ticker.deltaTime);
       };
       app.ticker.add(startTicker);
+
+      startScreen.onChangeLocation = () => {
+        app.ticker.remove(startTicker);
+        app.stage.removeChild(startScreen);
+        state.homeLat = 0;
+        state.homeLng = 0;
+        state.homeLabel = '';
+        saveLevelState(state);
+        resolve('change_location');
+      };
 
       startScreen.onStart = () => {
         app.ticker.remove(startTicker);
@@ -86,7 +97,16 @@ async function main() {
           resolve();
         }, 400);
       };
+    }).then((res) => {
+      if (res === 'change_location') {
+        startLevel(lastTimeOfDay);
+        return Promise.reject('change_location');
+      }
+    }).catch((err) => {
+      if (err !== 'change_location') console.error(err);
     });
+
+    if (!state.homeLat) return; // Prevent GameScreen from loading if changing location
 
     // ─── Game Screen ───
     const gameScreen = new GameScreen(app, {
@@ -106,7 +126,7 @@ async function main() {
     app.ticker.add(gameTicker);
 
     // Wait for win
-    await new Promise<void>((resolve) => {
+    const nextTimeOfDay = await new Promise<number>((resolve) => {
       gameScreen.onWin = () => {
         app.ticker.remove(gameTicker);
 
@@ -126,7 +146,7 @@ async function main() {
         document.getElementById('next-level-btn')!.addEventListener('click', () => {
           winOverlay.remove();
           app.stage.removeChild(gameScreen);
-          resolve();
+          resolve(gameScreen.getTimeOfDay());
         });
       };
     });
@@ -135,7 +155,7 @@ async function main() {
     state.level++;
     state.carColor = getCarColor(state.level);
     saveLevelState(state);
-    startLevel(); // Recursive — start next level
+    startLevel(nextTimeOfDay); // Recursive — start next level
   }
 
   startLevel();

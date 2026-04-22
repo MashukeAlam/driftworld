@@ -9,18 +9,18 @@ export interface LevelState {
   carColor: number;
 }
 
-// Car colors per level — cycling through these
+// Car colors per level — cycling through these (muted/pastel to match aesthetics)
 export const LEVEL_COLORS: number[] = [
-  0x88FF44, // Level 1: Lime green
-  0x44DDFF, // Level 2: Cyan
-  0xFF8844, // Level 3: Orange
-  0xFF44AA, // Level 4: Hot pink
-  0xFFDD22, // Level 5: Gold
-  0x44FF88, // Level 6: Mint
-  0xAA66FF, // Level 7: Purple
-  0xFF6644, // Level 8: Coral
-  0x44FFDD, // Level 9: Turquoise
-  0xFF4488, // Level 10: Rose
+  0x9CB380, // Level 1: Muted lime
+  0x7CA9B4, // Level 2: Muted cyan
+  0xC18C6A, // Level 3: Muted orange
+  0xB87C9E, // Level 4: Muted pink
+  0xCFB770, // Level 5: Muted gold
+  0x8BB097, // Level 6: Muted mint
+  0x9D8EAF, // Level 7: Muted purple
+  0xBB8275, // Level 8: Muted coral
+  0x80B3B3, // Level 9: Muted turquoise
+  0xB57B89, // Level 10: Muted rose
 ];
 
 const SAVE_KEY = 'dw_level_state';

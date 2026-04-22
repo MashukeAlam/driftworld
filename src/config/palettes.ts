@@ -25,8 +25,8 @@ export interface Palette {
 export const DAWN: Palette = {
   sky: 0xF4A97F,
   skyGradientEnd: 0xFFD580,
-  roadPrimary: 0xFFFFFF,
-  roadSecondary: 0xFFE8D0,
+  roadPrimary: 0xFFEEDD,
+  roadSecondary: 0xFFDAC0,
   roadOutline: 0xC08050,
   decoration: 0xDCB888,
   decorationAlt: 0xC49870,
@@ -41,8 +41,8 @@ export const DAWN: Palette = {
 export const NOON: Palette = {
   sky: 0xDFF0F7,
   skyGradientEnd: 0xE8F4FA,
-  roadPrimary: 0xFFFFFF,
-  roadSecondary: 0xE8E8E8,
+  roadPrimary: 0xEBF4FA,
+  roadSecondary: 0xDCEAF4,
   roadOutline: 0xB0B8C0,
   decoration: 0xC8E0C0,
   decorationAlt: 0xD0D0D0,

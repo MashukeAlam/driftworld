@@ -91,9 +91,12 @@ export function parseRoads(osmData: OSMData, projection: GeoProjection): RoadSeg
       }
     }
 
-    if (points.length >= 2) {
+    // Smooth sharp OSM corners
+    const smoothedPoints = smoothPolyline(points, 2);
+
+    if (smoothedPoints.length >= 2) {
       segments.push({
-        points,
+        points: smoothedPoints,
         highway,
         wayId: way.id,
         name: way.tags?.name || '',
@@ -145,4 +148,30 @@ export function findRoadMidpoints(segments: RoadSegment[]): Point[] {
   }
 
   return midpoints;
+}
+
+/**
+ * Apply Chaikin's corner cutting algorithm to smooth polylines.
+ */
+function smoothPolyline(points: Point[], iterations: number = 2): Point[] {
+  if (points.length < 3) return points;
+  let smoothed = points;
+  for (let it = 0; it < iterations; it++) {
+    const newPoints: Point[] = [smoothed[0]];
+    for (let i = 0; i < smoothed.length - 1; i++) {
+      const p0 = smoothed[i];
+      const p1 = smoothed[i + 1];
+      newPoints.push({
+        x: 0.75 * p0.x + 0.25 * p1.x,
+        y: 0.75 * p0.y + 0.25 * p1.y,
+      });
+      newPoints.push({
+        x: 0.25 * p0.x + 0.75 * p1.x,
+        y: 0.25 * p0.y + 0.75 * p1.y,
+      });
+    }
+    newPoints.push(smoothed[smoothed.length - 1]);
+    smoothed = newPoints;
+  }
+  return smoothed;
 }

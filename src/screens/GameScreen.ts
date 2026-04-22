@@ -62,6 +62,10 @@ export class GameScreen extends Container {
   private won = false;
   public onWin: (() => void) | null = null;
 
+  public getTimeOfDay(): number {
+    return this.dayNight?.getTime() || 0.02;
+  }
+
   constructor(app: Application, config: GameConfig) {
     super();
     this.app = app;
@@ -204,7 +208,7 @@ export class GameScreen extends Container {
       this.mapRenderer.setExplorationBounds(0, 0, this.currentRadiusMeters * PIXELS_PER_METER);
 
       this.decorationLayer.generate(0, 0, fetchRadius * PIXELS_PER_METER);
-      this.artifacts.spawnAtPoints(intersections, midpoints, this.currentRadiusMeters * PIXELS_PER_METER);
+      this.artifacts.spawnInRing(0, this.currentRadiusMeters * PIXELS_PER_METER, 13);
 
       this.loaded = true;
       this.hud.show();
@@ -313,7 +317,7 @@ export class GameScreen extends Container {
         this.mapRenderer.setExplorationBounds(0, 0, newRadiusPx);
         this.toastManager.showExpand();
         this.audioManager.playExpand();
-        this.artifacts.spawnInRing(radiusPx, newRadiusPx, 8);
+        this.artifacts.spawnInRing(radiusPx, newRadiusPx, 50);
       }
 
       this.hud.updateStats(count, this.totalPoints);
