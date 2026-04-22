@@ -64,21 +64,21 @@ export class BoundaryRing extends Container {
     const pulse = Math.sin(elapsed * 3) * 0.15 + 0.85;
     const glowWidth = 12 * pulse;
     this.glowGfx.circle(0, 0, r);
-    this.glowGfx.stroke({ width: glowWidth, color: 0xFF3333, alpha: 0.25 * pulse });
+    this.glowGfx.stroke({ width: glowWidth, color: 0xF13333, alpha: 0.25 * pulse });
     this.glowGfx.circle(0, 0, r);
-    this.glowGfx.stroke({ width: 6, color: 0xFF3333, alpha: 0.15 });
+    this.glowGfx.stroke({ width: 6, color: 0xF13333, alpha: 0.15 });
 
     // Flash on expand
     if (this.expandAnimProgress >= 0 && this.expandAnimProgress < 0.3) {
       const flashAlpha = (1 - this.expandAnimProgress / 0.3) * 0.5;
       this.glowGfx.circle(0, 0, r);
-      this.glowGfx.stroke({ width: 20, color: 0xFFFFFF, alpha: flashAlpha });
+      this.glowGfx.stroke({ width: 20, color: 0xF1FFFF, alpha: flashAlpha });
     }
 
     // ─── Main ring ───
     this.ringGfx.clear();
     this.ringGfx.circle(0, 0, r);
-    this.ringGfx.stroke({ width: 2, color: 0xFF5555, alpha: 0.75 });
+    this.ringGfx.stroke({ width: 2, color: 0xF15555, alpha: 0.75 });
 
     // ─── Labels ───
     this.labelContainer.removeChildren();

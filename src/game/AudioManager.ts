@@ -34,8 +34,6 @@ export class AudioManager {
       this.masterGain.connect(this.ctx.destination);
 
       this.startDrone();
-      this.scheduleThunder();
-
       this.startBGM();
       this.started = true;
     } catch (e) {
@@ -293,13 +291,13 @@ export class AudioManager {
     this.droneOsc1.frequency.setTargetAtTime(freq, now, 2);
     this.droneOsc2.frequency.setTargetAtTime(freq + 0.5, now, 2);
 
-    // Wind intensity: higher at dawn/dusk, lower at noon/night
-    const windIntensity = 0.05 + Math.sin(t * Math.PI * 2) * 0.04;
-    this.windGain.gain.setTargetAtTime(Math.max(0.02, windIntensity), now, 1);
+    // // Wind intensity: higher at dawn/dusk, lower at noon/night
+    // const windIntensity = 0.05 + Math.sin(t * Math.PI * 2) * 0.04;
+    // this.windGain.gain.setTargetAtTime(Math.max(0.02, windIntensity), now, 1);
 
-    // Wind pitch: higher during day
-    const windFreq = 400 + Math.sin(t * Math.PI * 2 + 0.5) * 200;
-    this.windFilter.frequency.setTargetAtTime(windFreq, now, 2);
+    // // Wind pitch: higher during day
+    // const windFreq = 400 + Math.sin(t * Math.PI * 2 + 0.5) * 200;
+    // this.windFilter.frequency.setTargetAtTime(windFreq, now, 2);
   }
 
   /**
