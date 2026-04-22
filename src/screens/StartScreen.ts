@@ -53,15 +53,8 @@ export class StartScreen extends Container {
     sky.fill(gradient);
     this.addChild(sky);
 
-    // ─── Subtle horizon line ───
-    const horizon = new Graphics();
-    const horizonY = this.appHeight * 0.65;
-    horizon.moveTo(0, horizonY);
-    horizon.lineTo(this.appWidth, horizonY);
-    horizon.stroke({ width: 1, color: 0x000000, alpha: 0.06 });
-    this.addChild(horizon);
-
     // ─── Ground plane below horizon ───
+    const horizonY = this.appHeight * 1;
     const ground = new Graphics();
     const groundGradient = new FillGradient(0, horizonY, 0, this.appHeight);
     groundGradient.addColorStop(0, this.currentPalette.ambient);
@@ -157,33 +150,30 @@ export class StartScreen extends Container {
   }
 
   private createSilhouettes() {
-    const horizonY = this.appHeight * 0.65;
-    const silhouetteData = [
-      // depth 1 (far, slow)
-      { type: 'mountain', speed: 0.15, y: horizonY - 60, scale: 1.2, depth: 0.3 },
-      { type: 'mountain2', speed: 0.1, y: horizonY - 40, scale: 0.8, depth: 0.3 },
-      { type: 'mountain', speed: 0.12, y: horizonY - 50, scale: 1.0, depth: 0.3 },
-      { type: 'mountain2', speed: 0.14, y: horizonY - 45, scale: 0.9, depth: 0.3 },
-      { type: 'mountain', speed: 0.11, y: horizonY - 55, scale: 1.1, depth: 0.3 },
-      // depth 2 (mid)
-      { type: 'hovercraft', speed: 0.4, y: horizonY + 20, scale: 0.6, depth: 0.6 },
-      { type: 'hovercraft', speed: 0.38, y: horizonY + 5, scale: 0.5, depth: 0.5 },
-      { type: 'road', speed: 0.35, y: horizonY + 10, scale: 0.5, depth: 0.6 },
-      { type: 'gem', speed: 0.45, y: horizonY - 80, scale: 0.4, depth: 0.6 },
-      { type: 'flower', speed: 0.42, y: horizonY - 60, scale: 0.45, depth: 0.6 },
-      { type: 'road', speed: 0.36, y: horizonY + 15, scale: 0.55, depth: 0.6 },
-      { type: 'gem', speed: 0.41, y: horizonY - 70, scale: 0.4, depth: 0.6 },
-      { type: 'flower', speed: 0.48, y: horizonY - 50, scale: 0.35, depth: 0.6 },
-      // depth 3 (close, fast)
-      { type: 'flower', speed: 0.7, y: horizonY + 50, scale: 0.5, depth: 0.9 },
-      { type: 'road2', speed: 0.6, y: horizonY + 30, scale: 0.7, depth: 0.9 },
-      { type: 'gem', speed: 0.8, y: horizonY + 40, scale: 0.6, depth: 0.9 },
-      { type: 'hovercraft', speed: 0.65, y: horizonY + 60, scale: 0.8, depth: 0.9 },
-      { type: 'road2', speed: 0.62, y: horizonY + 40, scale: 0.6, depth: 0.9 },
-      { type: 'gem', speed: 0.75, y: horizonY + 35, scale: 0.5, depth: 0.9 },
-      { type: 'flower', speed: 0.68, y: horizonY + 45, scale: 0.55, depth: 0.9 },
-      { type: 'hovercraft', speed: 0.72, y: horizonY + 55, scale: 0.75, depth: 0.9 },
-    ];
+    const horizonY = this.appHeight * 0.70;
+    const silhouetteData: { type: string, speed: number, y: number, scale: number, depth: number }[] = [];
+
+    // depth 1: Far distant mountains (very slow)
+    for (let i = 0; i < 4; i++) {
+      silhouetteData.push({ type: 'mountain', speed: 0.08 + Math.random() * 0.05, y: horizonY - 40 - Math.random() * 40, scale: 1.0 + Math.random() * 0.5, depth: 0.2 });
+      silhouetteData.push({ type: 'mountain2', speed: 0.06 + Math.random() * 0.04, y: horizonY - 30 - Math.random() * 30, scale: 0.8 + Math.random() * 0.4, depth: 0.25 });
+    }
+
+    // depth 2: Mid-ground vehicles, roads, and artifacts (medium speed)
+    for (let i = 0; i < 9; i++) {
+      // silhouetteData.push({ type: 'hovercraft', speed: 0.3 + Math.random() * 0.2, y: horizonY + 10 + Math.random() * 30, scale: 0.4 + Math.random() * 0.3, depth: 0.5 });
+      silhouetteData.push({ type: 'road', speed: 0.25 + Math.random() * 0.1, y: horizonY + 5 + Math.random() * 20, scale: 0.4 + Math.random() * 0.2, depth: 0.5 });
+      silhouetteData.push({ type: 'gem', speed: 0.35 + Math.random() * 0.15, y: horizonY - 20 - Math.random() * 60, scale: 0.3 + Math.random() * 0.2, depth: 0.5 });
+      silhouetteData.push({ type: 'flower', speed: 0.35 + Math.random() * 0.15, y: horizonY - 10 - Math.random() * 50, scale: 0.3 + Math.random() * 0.2, depth: 0.5 });
+    }
+
+    // depth 3: Foreground large details (fast)
+    for (let i = 0; i < 7; i++) {
+      // silhouetteData.push({ type: 'hovercraft', speed: 0.6 + Math.random() * 0.3, y: horizonY + 40 + Math.random() * 40, scale: 0.7 + Math.random() * 0.4, depth: 0.85 });
+      silhouetteData.push({ type: 'road2', speed: 0.5 + Math.random() * 0.2, y: horizonY + 30 + Math.random() * 30, scale: 0.6 + Math.random() * 0.3, depth: 0.85 });
+      silhouetteData.push({ type: 'gem', speed: 0.7 + Math.random() * 0.2, y: horizonY + 20 + Math.random() * 40, scale: 0.5 + Math.random() * 0.3, depth: 0.85 });
+      silhouetteData.push({ type: 'flower', speed: 0.65 + Math.random() * 0.25, y: horizonY + 10 + Math.random() * 50, scale: 0.45 + Math.random() * 0.3, depth: 0.85 });
+    }
 
     for (const data of silhouetteData) {
       const gfx = new Graphics();

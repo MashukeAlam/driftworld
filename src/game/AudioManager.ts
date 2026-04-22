@@ -34,10 +34,9 @@ export class AudioManager {
       this.masterGain.connect(this.ctx.destination);
 
       this.startDrone();
-      this.startWind();
-      this.startRain();
-      this.startBGM();
       this.scheduleThunder();
+
+      this.startBGM();
       this.started = true;
     } catch (e) {
       console.warn('Audio init failed:', e);

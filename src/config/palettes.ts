@@ -55,19 +55,19 @@ export const NOON: Palette = {
 };
 
 export const DUSK: Palette = {
-  sky: 0x2D1B4E,
-  skyGradientEnd: 0x8B3A62,
-  roadPrimary: 0xFFD8B0,
-  roadSecondary: 0xD0A880,
-  roadOutline: 0x905838,
-  decoration: 0x503050,
-  decorationAlt: 0x403040,
-  waterTint: 0x405080,
-  ambient: 0xE0A080,
-  fogColor: 0x1A0E30,
-  particleColor: 0xFFA060,
-  glowColor: 0xFF9060,
-  textColor: 0xFFE0C0,
+  sky: 0x1F4E5B, // Deep teal
+  skyGradientEnd: 0x4A8E9C, // Cyan
+  roadPrimary: 0xC0E8E8,
+  roadSecondary: 0xA0D0D0,
+  roadOutline: 0x2A6E7C,
+  decoration: 0x70B0B0,
+  decorationAlt: 0x509090,
+  waterTint: 0x4090A0,
+  ambient: 0x203040,
+  fogColor: 0x1A4050,
+  particleColor: 0xA0FFFF,
+  glowColor: 0x00FFFF,
+  textColor: 0xE0FFFF,
 };
 
 export const NIGHT: Palette = {
