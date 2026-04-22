@@ -12,7 +12,7 @@ import { Container, Graphics, Text, TextStyle, FillGradient, Application } from 
 import { getPalette, Palette } from '../config/palettes';
 
 export class StartScreen extends Container {
-  private silhouettes: { gfx: Graphics; speed: number; startX: number; y: number }[] = [];
+  private silhouettes: { gfx: Graphics; vx: number; vy: number; }[] = [];
   private titleText!: Text;
   private taglineText!: Text;
   private levelText!: Text;
@@ -41,6 +41,10 @@ export class StartScreen extends Container {
     this.timeOfDay = timeOfDay;
     this.currentPalette = getPalette(timeOfDay);
     this.buildScene();
+  }
+
+  public getTimeOfDay(): number {
+    return this.timeOfDay;
   }
 
   private buildScene() {
@@ -179,14 +183,21 @@ export class StartScreen extends Container {
       const gfx = new Graphics();
       this.drawSilhouetteShape(gfx, data.type, data.scale);
       gfx.alpha = data.depth * 0.25;
-      gfx.x = this.appWidth + Math.random() * this.appWidth;
-      gfx.y = data.y + (Math.random() - 0.5) * 20;
+      
+      // Spawn from anywhere on screen
+      gfx.x = Math.random() * this.appWidth;
+      gfx.y = Math.random() * this.appHeight;
       this.addChild(gfx);
+      
+      // Random angle (0 to 360 degrees)
+      const angle = Math.random() * Math.PI * 2;
+      const vx = Math.cos(angle) * data.speed;
+      const vy = Math.sin(angle) * data.speed;
+
       this.silhouettes.push({
         gfx,
-        speed: data.speed,
-        startX: gfx.x,
-        y: gfx.y,
+        vx,
+        vy
       });
     }
   }
@@ -331,15 +342,20 @@ export class StartScreen extends Container {
   public update(delta: number) {
     this.elapsed += delta / 60; // Convert to seconds (at 60fps)
 
-    // ─── Animate silhouettes (right to left) ───
+    // ─── Animate silhouettes (random floating) ───
     for (const s of this.silhouettes) {
-      s.gfx.x -= s.speed * delta;
-      // Gentle vertical bobbing
-      s.gfx.y = s.y + Math.sin(this.elapsed * 0.5 + s.startX * 0.01) * 3;
-      // Wrap around
-      if (s.gfx.x < -300) {
-        s.gfx.x = this.appWidth + 200 + Math.random() * 200;
-      }
+      s.gfx.x += s.vx * delta;
+      s.gfx.y += s.vy * delta;
+      
+      // Wrap around bounds with a margin
+      const margin = 200;
+      if (s.gfx.x < -margin) s.gfx.x = this.appWidth + margin;
+      if (s.gfx.x > this.appWidth + margin) s.gfx.x = -margin;
+      if (s.gfx.y < -margin) s.gfx.y = this.appHeight + margin;
+      if (s.gfx.y > this.appHeight + margin) s.gfx.y = -margin;
+      
+      // Add slight rotation to objects like gems and flowers
+      s.gfx.rotation += (s.vx + s.vy) * 0.005 * delta;
     }
 
     // ─── Fade in level badge + car preview after 0.8s ───

@@ -38,10 +38,11 @@ async function main() {
   };
 
   // ─── Main Game Loop ───
-  async function startLevel(lastTimeOfDay: number = 0.02) {
+  async function startLevel(lastTimeOfDay: number = typeof state.lastTimeOfDay === 'number' ? state.lastTimeOfDay : Math.random()) {
     const level = state.level;
     const carColor = getCarColor(level);
     state.carColor = carColor;
+    state.lastTimeOfDay = lastTimeOfDay;
     const carColorHex = '#' + carColor.toString(16).padStart(6, '0');
 
     // ─── Location Picker (only if no home set) ───
@@ -75,6 +76,7 @@ async function main() {
         state.homeLat = 0;
         state.homeLng = 0;
         state.homeLabel = '';
+        state.lastTimeOfDay = startScreen.getTimeOfDay();
         saveLevelState(state);
         resolve('change_location');
       };
@@ -154,6 +156,7 @@ async function main() {
     // ─── Next Level ───
     state.level++;
     state.carColor = getCarColor(state.level);
+    state.lastTimeOfDay = nextTimeOfDay;
     saveLevelState(state);
     startLevel(nextTimeOfDay); // Recursive — start next level
   }

@@ -7,6 +7,7 @@ export interface LevelState {
   homeLng: number;
   homeLabel: string;
   carColor: number;
+  lastTimeOfDay?: number;
 }
 
 // Car colors per level — cycling through these (muted/pastel to match aesthetics)

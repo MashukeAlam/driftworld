@@ -60,6 +60,7 @@ export class GameScreen extends Container {
   private lastMapPaletteUpdate = 0;
   private lastRoadCheck = 0;
   private currentRoadName = '';
+  private currentGlowColor = 0xFFE8A0;
   private homePixelX = 0;
   private homePixelY = 0;
   private won = false;
@@ -419,7 +420,7 @@ export class GameScreen extends Container {
 
     // Pulse effect
     const pulse = 0.6 + Math.sin(this.elapsed * 4) * 0.3;
-    this.homeArrowGfx.fill({ color: 0xFFE8A0, alpha: pulse });
+    this.homeArrowGfx.fill({ color: this.currentGlowColor, alpha: pulse });
     this.homeArrowGfx.stroke({ width: 1, color: 0xFFFFFF, alpha: pulse * 0.5 });
 
     // Distance label
@@ -448,5 +449,6 @@ export class GameScreen extends Container {
     this.boundaryRing.updatePalette(palette);
     this.hovercraft.updatePalette(palette);
     this.hud.updatePalette(palette);
+    this.currentGlowColor = palette.glowColor;
   }
 }

@@ -64,37 +64,37 @@ export class Artifacts extends Container {
   private drawArtifact(gfx: Graphics, type: ArtifactType) {
     switch (type) {
       case 'gem':
-        // Diamond
-        gfx.moveTo(0, -8); gfx.lineTo(6, 0); gfx.lineTo(0, 8); gfx.lineTo(-6, 0); gfx.closePath();
-        gfx.fill({ color: 0x60D0FF, alpha: 0.8 });
-        gfx.moveTo(0, -8); gfx.lineTo(6, 0); gfx.lineTo(0, 8); gfx.lineTo(-6, 0); gfx.closePath();
-        gfx.stroke({ width: 1, color: 0xA0E8FF, alpha: 0.9 });
+        // Emerald / Diamond shape
+        gfx.moveTo(0, -12); gfx.lineTo(9, 0); gfx.lineTo(0, 12); gfx.lineTo(-9, 0); gfx.closePath();
+        gfx.fill({ color: 0x50C878, alpha: 0.9 }); // Emerald green
+        gfx.moveTo(0, -12); gfx.lineTo(9, 0); gfx.lineTo(0, 12); gfx.lineTo(-9, 0); gfx.closePath();
+        gfx.stroke({ width: 1.5, color: 0x90EE90, alpha: 0.9 });
         // Inner shine
-        gfx.moveTo(0, -4); gfx.lineTo(3, 0); gfx.lineTo(0, 4); gfx.lineTo(-3, 0); gfx.closePath();
-        gfx.fill({ color: 0xFFFFFF, alpha: 0.3 });
+        gfx.moveTo(0, -6); gfx.lineTo(4.5, 0); gfx.lineTo(0, 6); gfx.lineTo(-4.5, 0); gfx.closePath();
+        gfx.fill({ color: 0xFFFFFF, alpha: 0.4 });
         break;
       case 'flower':
         for (let i = 0; i < 5; i++) {
           const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
-          gfx.circle(Math.cos(a) * 5, Math.sin(a) * 5, 3.5);
+          gfx.circle(Math.cos(a) * 7.5, Math.sin(a) * 7.5, 5); // Larger petals
         }
-        gfx.fill({ color: 0xFF90B0, alpha: 0.75 });
-        gfx.circle(0, 0, 2.5);
-        gfx.fill({ color: 0xFFE060, alpha: 0.9 });
+        gfx.fill({ color: 0xFF90B0, alpha: 0.85 });
+        gfx.circle(0, 0, 4);
+        gfx.fill({ color: 0xFFE060, alpha: 0.95 });
         break;
       case 'rare':
-        // Star shape
+        // Star shape (larger)
         for (let i = 0; i < 5; i++) {
           const outerA = (i / 5) * Math.PI * 2 - Math.PI / 2;
           const innerA = ((i + 0.5) / 5) * Math.PI * 2 - Math.PI / 2;
           const method = i === 0 ? 'moveTo' : 'lineTo';
-          gfx[method](Math.cos(outerA) * 10, Math.sin(outerA) * 10);
-          gfx.lineTo(Math.cos(innerA) * 4, Math.sin(innerA) * 4);
+          gfx[method](Math.cos(outerA) * 15, Math.sin(outerA) * 15);
+          gfx.lineTo(Math.cos(innerA) * 6, Math.sin(innerA) * 6);
         }
         gfx.closePath();
-        gfx.fill({ color: 0xFFD700, alpha: 0.85 });
-        gfx.circle(0, 0, 3);
-        gfx.fill({ color: 0xFFFFFF, alpha: 0.5 });
+        gfx.fill({ color: 0xFFD700, alpha: 0.95 });
+        gfx.circle(0, 0, 4.5);
+        gfx.fill({ color: 0xFFFFFF, alpha: 0.6 });
         break;
     }
   }

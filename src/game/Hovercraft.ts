@@ -40,7 +40,7 @@ export class Hovercraft extends Container {
 
   constructor(carColor: number = 0x88FF44) {
     super();
-    this.scale.set(1.5);
+    this.scale.set(2.0);
     this.carColor = carColor;
     this.shadowGfx = new Graphics();
     this.addChild(this.shadowGfx);
