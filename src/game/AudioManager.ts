@@ -144,7 +144,7 @@ export class AudioManager {
     if (!this.ctx) return;
     // Generative BGM: slow pentatonic melody played by a soft sine pad
     const bgmGain = this.ctx.createGain();
-    bgmGain.gain.value = 0.06;
+    bgmGain.gain.value = 0.15;
     bgmGain.connect(this.masterGain);
 
     // Pentatonic notes (C major pentatonic across octaves)

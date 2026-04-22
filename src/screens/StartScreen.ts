@@ -92,7 +92,9 @@ export class StartScreen extends Container {
     carPreview.x = this.appWidth / 2;
     carPreview.y = this.appHeight * 0.38 - 80;
     carPreview.alpha = 0;
-    this.addChild(carPreview);
+
+    // Don't show cars for now. Make car good looking before showing it on start screen.
+    // this.addChild(carPreview);
     // Store for fade-in
     (this as any)._carPreview = carPreview;
 

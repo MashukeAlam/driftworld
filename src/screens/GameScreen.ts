@@ -108,14 +108,14 @@ export class GameScreen extends Container {
     this.homeArrow.addChild(this.homeArrowGfx);
     const arrowLabelStyle = new TextStyle({
       fontFamily: 'Outfit, sans-serif',
-      fontSize: 10,
-      fontWeight: '600',
+      fontSize: 12,
+      fontWeight: '700',
       fill: 0xFFE8A0,
       letterSpacing: 1,
     });
     this.homeDistLabel = new Text({ text: '', style: arrowLabelStyle });
     this.homeDistLabel.anchor.set(0.5);
-    this.homeDistLabel.y = 18;
+    this.homeDistLabel.y = 24;
     this.homeArrow.addChild(this.homeDistLabel);
     this.addChild(this.homeArrow);
 
@@ -399,11 +399,11 @@ export class GameScreen extends Container {
     this.homeArrowGfx.clear();
     this.homeArrowGfx.rotation = angle;
 
-    // Arrow triangle
-    this.homeArrowGfx.moveTo(12, 0);
-    this.homeArrowGfx.lineTo(-6, -7);
-    this.homeArrowGfx.lineTo(-3, 0);
-    this.homeArrowGfx.lineTo(-6, 7);
+    // Arrow triangle (scaled up for visibility)
+    this.homeArrowGfx.moveTo(20, 0);
+    this.homeArrowGfx.lineTo(-10, -12);
+    this.homeArrowGfx.lineTo(-5, 0);
+    this.homeArrowGfx.lineTo(-10, 12);
     this.homeArrowGfx.closePath();
 
     // Pulse effect
