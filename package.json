@@ -1,0 +1,20 @@
+{
+  "name": "driftworld",
+  "version": "1.0.0",
+  "description": "A meditative real-world hovercraft exploration game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@turf/turf": "^7.2.0",
+    "pixi.js": "^8.9.2",
+    "simplex-noise": "^4.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3"
+  }
+}
