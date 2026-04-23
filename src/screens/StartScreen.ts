@@ -78,6 +78,13 @@ export class StartScreen extends Container {
       fontWeight: '700',
       fill: this.currentPalette.textColor,
       letterSpacing: 3,
+      dropShadow: {
+        alpha: 0.6,
+        angle: Math.PI / 2,
+        blur: 6,
+        color: 0x000000,
+        distance: 2,
+      }
     });
     this.levelText = new Text({ text: `LEVEL ${this.level}`, style: levelStyle });
     this.levelText.anchor.set(0.5);
@@ -108,6 +115,13 @@ export class StartScreen extends Container {
       fontWeight: '300',
       fill: this.currentPalette.textColor,
       letterSpacing: 12,
+      dropShadow: {
+        alpha: 0.5,
+        angle: Math.PI / 2,
+        blur: 20,
+        color: 0x000000,
+        distance: 4,
+      }
     });
     this.titleText = new Text({ text: 'DRIFTWORLD', style: titleStyle });
     this.titleText.anchor.set(0.5);
@@ -123,6 +137,13 @@ export class StartScreen extends Container {
       fontWeight: '300',
       fill: this.currentPalette.textColor,
       letterSpacing: 6,
+      dropShadow: {
+        alpha: 0.6,
+        angle: Math.PI / 2,
+        blur: 10,
+        color: 0x000000,
+        distance: 2,
+      }
     });
     this.taglineText = new Text({ text: 'DRIFT  ·  COLLECT  ·  EXPLORE', style: taglineStyle });
     this.taglineText.anchor.set(0.5);
