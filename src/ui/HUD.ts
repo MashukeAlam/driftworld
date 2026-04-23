@@ -49,8 +49,23 @@ export class HUD {
   }
 
   updateStats(artifacts: number, points: number) {
-    this.artifactEl.textContent = String(artifacts);
-    this.pointsEl.textContent = `${points} pts`;
+    const newArtifacts = String(artifacts);
+    if (this.artifactEl.textContent !== newArtifacts) {
+      this.artifactEl.textContent = newArtifacts;
+      this.triggerBump(this.artifactEl);
+    }
+    
+    const newPoints = `${points} pts`;
+    if (this.pointsEl.textContent !== newPoints) {
+      this.pointsEl.textContent = newPoints;
+      this.triggerBump(this.pointsEl);
+    }
+  }
+
+  private triggerBump(el: HTMLElement) {
+    el.classList.remove('bump');
+    void el.offsetWidth; // trigger reflow
+    el.classList.add('bump');
   }
 
   updateRoadName(name: string) {

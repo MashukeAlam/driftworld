@@ -281,7 +281,14 @@ export class GameScreen extends Container {
     const distFromCenter = Math.sqrt(this.hovercraft.x ** 2 + this.hovercraft.y ** 2);
     const radiusPx = this.currentRadiusMeters * PIXELS_PER_METER;
     if (distFromCenter > radiusPx - 100 && this.boundaryWarningCooldown <= 0) {
-      this.toastManager.showBoundary();
+      const count = this.artifacts.getCollectedCount();
+      const nextThreshold = BoundaryRing.getNextArtifactThreshold(count);
+      let text = 'Collect more to expand your world';
+      if (nextThreshold) {
+        const remaining = nextThreshold - count;
+        text = `Collect ${remaining} more ${remaining === 1 ? 'artifact' : 'artifacts'} to expand!`;
+      }
+      this.toastManager.showBoundary(text);
       this.boundaryWarningCooldown = 300;
     }
     this.boundaryWarningCooldown -= delta;
@@ -295,7 +302,7 @@ export class GameScreen extends Container {
 
       if (this.hovercraft.isDrifting && this.driftBonusCooldown <= 0) {
         bonusPoints = collected.points;
-        const praises = ['✨ Smooth Drift!', '🌊 Drift Boss!', '⚡ Slick Moves!'];
+        const praises = ['Smooth Drift!', 'Slick Moves!'];
         bonusText = praises[Math.floor(Math.random() * praises.length)];
         this.driftBonusCooldown = 30;
       }
@@ -304,7 +311,9 @@ export class GameScreen extends Container {
       this.totalPoints += totalPts;
 
       this.audioManager.playCollect(collected.type);
-      this.toastManager.showCollect(collected.type, collected.points);
+      if (collected.type === 'rare') {
+        this.toastManager.showCollect(collected.type, collected.points);
+      }
 
       if (bonusText) {
         this.audioManager.playDriftBonus();
@@ -440,7 +449,7 @@ export class GameScreen extends Container {
     this.skyBg.fill(gradient);
 
     // Throttle complex vector redrawing to twice a second
-    if (this.elapsed - this.lastMapPaletteUpdate > 0.5) {
+    if (this.elapsed - this.lastMapPaletteUpdate > 0.2) {
       this.mapRenderer.updatePalette(palette);
       this.decorationLayer.updatePalette(palette);
       this.lastMapPaletteUpdate = this.elapsed;

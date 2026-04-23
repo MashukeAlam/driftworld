@@ -53,7 +53,7 @@ export class ToastManager {
     this.show('expand');
   }
 
-  showBoundary() {
-    this.show('boundary');
+  showBoundary(customText?: string) {
+    this.show('boundary', customText);
   }
 }

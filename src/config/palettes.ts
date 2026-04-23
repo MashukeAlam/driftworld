@@ -39,19 +39,19 @@ export const DAWN: Palette = {
 };
 
 export const NOON: Palette = {
-  sky: 0xDFF0F7,
-  skyGradientEnd: 0xE8F4FA,
-  roadPrimary: 0xEBF8FF, // Lighter than sky 0xDFF0F7
-  roadSecondary: 0xE6F4FC,
-  roadOutline: 0xB0B8C0,
-  decoration: 0xC8E0C0,
-  decorationAlt: 0xD0D0D0,
-  waterTint: 0x88C8E8,
-  ambient: 0xF8FCFF,
-  fogColor: 0xA0C8E0,
-  particleColor: 0xFFFFE0,
-  glowColor: 0xFFE8A0,
-  textColor: 0x304050,
+  sky: 0x93A3B1,            // Overcast slate blue-grey
+  skyGradientEnd: 0xB5C2CB, // Soft misty lighter grey towards horizon
+  roadPrimary: 0xCFD8DC,    // Wet light grey asphalt
+  roadSecondary: 0xB0BEC5,  // Wet darker grey asphalt
+  roadOutline: 0x78909C,    // Deep grey outline
+  decoration: 0x8CA394,     // Muted, desaturated green (wet foliage)
+  decorationAlt: 0x808E95,  // Muted steel grey (wet buildings)
+  waterTint: 0x607D8B,      // Deep stormy blue
+  ambient: 0xD0D8DB,        // Soft diffused overcast light
+  fogColor: 0x90A4AE,       // Thick grey-blue mist
+  particleColor: 0xE0F2F1,  // Bright white/cyan for water spray/sparks
+  glowColor: 0xFFE082,      // Cozy warm amber (streetlights through rain)
+  textColor: 0x263238,      // Deep slate for readability
 };
 
 export const DUSK: Palette = {

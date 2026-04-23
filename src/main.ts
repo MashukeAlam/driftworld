@@ -8,6 +8,7 @@ import { Application } from 'pixi.js';
 import { StartScreen } from './screens/StartScreen';
 import { GameScreen } from './screens/GameScreen';
 import { LocationPicker } from './ui/LocationPicker';
+import { getPalette, colorToHex } from './config/palettes';
 import {
   loadLevelState, saveLevelState, getCarColor,
   getSpawnDistanceMeters, calculateSpawnPosition,
@@ -86,6 +87,8 @@ async function main() {
 
         const loadingEl = document.createElement('div');
         loadingEl.className = 'loading-screen';
+        const palette = getPalette(startScreen.getTimeOfDay());
+        loadingEl.style.background = `linear-gradient(180deg, ${colorToHex(palette.sky)} 0%, ${colorToHex(palette.skyGradientEnd)} 100%)`;
         loadingEl.innerHTML = `
           <div class="loading-text">MAPPING THE WORLD</div>
           <div class="loading-dots">

@@ -125,4 +125,11 @@ export class BoundaryRing extends Container {
     }
     return radius;
   }
+
+  static getNextArtifactThreshold(count: number): number | null {
+    for (const step of RADIUS_STEPS) {
+      if (count < step.artifacts) return step.artifacts;
+    }
+    return null; // max level
+  }
 }

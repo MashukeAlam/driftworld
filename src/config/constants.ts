@@ -13,9 +13,9 @@ export interface RadiusStep {
 }
 
 export const RADIUS_STEPS: RadiusStep[] = [
-  { artifacts: 0,  radius: 300  },
-  { artifacts: 5,  radius: 500  },
-  { artifacts: 12, radius: 800  },
+  { artifacts: 0, radius: 300 },
+  { artifacts: 5, radius: 500 },
+  { artifacts: 12, radius: 800 },
   { artifacts: 22, radius: 1200 },
   { artifacts: 35, radius: 2000 },
 ];
@@ -26,11 +26,11 @@ export const TILE_SIZE_METERS = 500;     // OSM tile grid size
 export const PREFETCH_DISTANCE = 150;    // Pre-fetch adjacent tiles at this distance (m)
 
 // ─── Hovercraft Physics ───
-export const THRUST_FORCE = 0.12;
+export const THRUST_FORCE = 0.15;
 export const LINEAR_DRAG = 0.965;
 export const TURN_FORCE = 0.0035;
 export const ANGULAR_DRAG = 0.88;
-export const MAX_SPEED = 5;
+export const MAX_SPEED = 7.5;
 
 // ─── Boundary ───
 export const BOUNDARY_PUSH_FORCE = 0.3;
@@ -44,16 +44,16 @@ export const COLLECT_RADIUS = 22;  // px
 export const ARTIFACT_DENSITY = 0.4; // artifacts per road intersection
 
 // ─── Day/Night Cycle ───
-export const DAY_CYCLE_DURATION = 180; // seconds for full day cycle (~3 real minutes)
+export const DAY_CYCLE_DURATION = 120; // seconds for full day cycle (~3 real minutes)
 
 // ─── Overpass API ───
-export const OVERPASS_URL = import.meta.env.DEV 
-  ? 'https://overpass-api.de/api/interpreter' 
+export const OVERPASS_URL = import.meta.env.DEV
+  ? 'https://overpass-api.de/api/interpreter'
   : 'https://overpass.kumi.systems/api/interpreter';
 export const OVERPASS_TIMEOUT = 25;
 
 // ─── Camera ───
-export const CAMERA_LERP = 0.08;
+export const CAMERA_LERP = 0.09;
 
 // ─── Road widths by highway type (in pixels) ───
 export const ROAD_WIDTHS: Record<string, number> = {

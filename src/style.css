@@ -82,6 +82,17 @@ html, body {
   filter: drop-shadow(0 0 4px rgba(255,232,160,0.5));
 }
 
+@keyframes point-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); color: #ffe8a0; text-shadow: 0 0 8px rgba(255,232,160,0.8); }
+  100% { transform: scale(1); }
+}
+
+.hud-stat span.bump {
+  display: inline-block;
+  animation: point-bump 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
 .hud-day-indicator {
   position: absolute;
   top: 20px;
